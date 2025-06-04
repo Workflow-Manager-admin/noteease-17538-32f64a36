@@ -1,0 +1,210 @@
+---
+import notesStore from "../store/notesStore";
+
+const categories = notesStore.getCategories();
+---
+
+<div class="modal-overlay" id="noteEditorModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="editorTitle">New Note</h2>
+      <button class="modal-close" id="closeEditor">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <form id="noteForm">
+        <input type="hidden" id="noteId" value="" />
+        
+        <div class="form-group">
+          <label for="noteTitle" class="form-label">Title</label>
+          <input 
+            type="text" 
+            id="noteTitle" 
+            class="form-control" 
+            placeholder="Note title" 
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="noteCategory" class="form-label">Category</label>
+          <select id="noteCategory" class="form-control">
+            {categories.map((category) => (
+              <option value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="noteContent" class="form-label">Content</label>
+          <textarea 
+            id="noteContent" 
+            class="form-control" 
+            placeholder="Note content" 
+            rows="8"
+          ></textarea>
+        </div>
+      </form>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn" id="cancelButton">Cancel</button>
+      <button class="btn btn-primary" id="saveButton">Save</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-overlay {
+    display: none;
+  }
+  
+  .modal-overlay.visible {
+    display: flex;
+  }
+  
+  .modal {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .modal-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .modal-close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  #noteContent {
+    resize: vertical;
+  }
+</style>
+
+<script>
+  import notesStore from "../store/notesStore";
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("noteEditorModal");
+    const form = document.getElementById("noteForm");
+    const noteIdInput = document.getElementById("noteId");
+    const titleInput = document.getElementById("noteTitle");
+    const contentInput = document.getElementById("noteContent");
+    const categorySelect = document.getElementById("noteCategory");
+    const editorTitle = document.getElementById("editorTitle");
+    const closeButton = document.getElementById("closeEditor");
+    const cancelButton = document.getElementById("cancelButton");
+    const saveButton = document.getElementById("saveButton");
+    
+    // Function to show modal
+    function showModal(isEdit = false, noteId = null) {
+      modal.classList.add("visible");
+      
+      // Reset form
+      form.reset();
+      noteIdInput.value = "";
+      
+      if (isEdit && noteId) {
+        // Edit existing note
+        const note = notesStore.getNoteById(parseInt(noteId));
+        
+        if (note) {
+          editorTitle.textContent = "Edit Note";
+          noteIdInput.value = note.id;
+          titleInput.value = note.title;
+          contentInput.value = note.content;
+          
+          // Set category
+          const categoryOption = Array.from(categorySelect.options).find(
+            option => option.value === note.category
+          );
+          
+          if (categoryOption) {
+            categorySelect.selectedIndex = categoryOption.index;
+          }
+        }
+      } else {
+        // New note
+        editorTitle.textContent = "New Note";
+      }
+    }
+    
+    // Function to hide modal
+    function hideModal() {
+      modal.classList.remove("visible");
+    }
+    
+    // Close modal events
+    closeButton.addEventListener("click", hideModal);
+    cancelButton.addEventListener("click", hideModal);
+    
+    // Click outside modal to close
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        hideModal();
+      }
+    });
+    
+    // Handle save button
+    saveButton.addEventListener("click", () => {
+      // Form validation
+      if (!titleInput.value.trim()) {
+        alert("Please enter a title for your note");
+        return;
+      }
+      
+      const noteData = {
+        title: titleInput.value.trim(),
+        content: contentInput.value.trim(),
+        category: categorySelect.value
+      };
+      
+      const noteId = noteIdInput.value ? parseInt(noteIdInput.value) : null;
+      
+      if (noteId) {
+        // Update existing note
+        notesStore.updateNote(noteId, noteData);
+      } else {
+        // Create new note
+        notesStore.createNote(noteData);
+      }
+      
+      // Hide modal
+      hideModal();
+      
+      // Notify components about note change
+      document.dispatchEvent(new CustomEvent("notesChanged"));
+    });
+    
+    // Listen for edit note event
+    document.addEventListener("editNote", (e) => {
+      const { noteId } = e.detail;
+      showModal(true, noteId);
+    });
+    
+    // Listen for new note event
+    document.addEventListener("newNote", () => {
+      showModal();
+    });
+  });
+</script>
