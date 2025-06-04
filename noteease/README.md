@@ -1,47 +1,85 @@
-# Astro Starter Kit: Minimal
+# NoteEase
 
-```sh
-npm create astro@latest -- --template minimal
+A simple and intuitive notes application built with Astro and JavaScript (ES6+) that allows users to create, edit, delete, and organize their personal notes.
+
+## Features
+
+- Create and edit notes with title and content
+- Categorize notes for better organization
+- Search notes by title and content
+- Delete unwanted notes
+- Responsive design for desktop and mobile devices
+- Local storage for persistence
+
+## Theme Colors
+
+- Primary: #1976D2 (Blue)
+- Secondary: #FFFFFF (White)
+- Accent: #FFC107 (Amber)
+
+## Project Structure
+
 ```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
+noteease/
 ├── public/
+│   ├── favicon.svg
+│   └── styles/
+│       └── global.css
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/
+│   │   ├── Header.astro
+│   │   ├── NoteCard.astro
+│   │   ├── NoteEditor.astro
+│   │   ├── NoteList.astro
+│   │   ├── NoteViewer.astro
+│   │   ├── SearchBar.astro
+│   │   └── Sidebar.astro
+│   ├── layouts/
+│   │   └── MainLayout.astro
+│   ├── pages/
+│   │   └── index.astro
+│   ├── store/
+│   │   └── notesStore.js
+│   └── styles/
+│       └── global.css
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Getting Started
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open your browser and navigate to `http://localhost:3000`
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Build
 
-## 🧞 Commands
+To build the project for production:
 
-All commands are run from the root of the project, from a terminal:
+```bash
+npm run build
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+The build output will be in the `dist/` directory.
 
-## 👀 Want to learn more?
+## Preview
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+To preview the production build:
+
+```bash
+npm run preview
+```
+
+## Technology Stack
+
+- Astro
+- JavaScript (ES6+)
+- CSS3
