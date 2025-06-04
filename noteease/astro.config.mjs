@@ -10,5 +10,11 @@ export default defineConfig({
         headers: {
             'Access-Control-Allow-Origin': '*'
         },
+    },
+    vite: {
+        // Bypass Node.js version check for compatibility
+        build: {
+            target: 'esnext'
+        }
     }
 })
