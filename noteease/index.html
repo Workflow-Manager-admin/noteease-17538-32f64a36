@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoteEase</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <!-- Import Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Import Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Import CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <h1>NoteEase</h1>
+        <button class="menu-button" id="menuButton">
+          <span class="material-icons">menu</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar-container" id="sidebar">
+    <div class="sidebar">
+      <button class="sidebar-close" id="closeSidebar">
+        <span class="material-icons">close</span>
+      </button>
+      
+      <div class="sidebar-header">
+        <h2>Categories</h2>
+        <button class="btn btn-accent add-category-button" id="addCategoryButton">
+          <span class="material-icons">add</span> New
+        </button>
+      </div>
+      
+      <ul class="category-list" id="categoryList">
+        <li class="category-item">
+          <button class="category-button active" data-category="">All Notes</button>
+        </li>
+        <!-- Categories will be loaded dynamically -->
+      </ul>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <span class="material-icons search-icon">search</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        id="searchInput" 
+        placeholder="Search notes..." 
+        aria-label="Search notes"
+      />
+    </div>
+
+    <!-- Note List -->
+    <div class="note-list" id="noteList">
+      <!-- Notes will be loaded dynamically -->
+    </div>
+  </main>
+
+  <!-- Floating Action Button -->
+  <button class="fab" id="addNoteButton" aria-label="Create new note">
+    <span class="material-icons">add</span>
+  </button>
+
+  <!-- Note Editor Modal -->
+  <div class="modal-overlay" id="noteEditorModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="editorTitle">New Note</h2>
+        <button class="modal-close" id="closeEditor">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <form id="noteForm">
+          <input type="hidden" id="noteId" value="" />
+          
+          <div class="form-group">
+            <label for="noteTitle" class="form-label">Title</label>
+            <input 
+              type="text" 
+              id="noteTitle" 
+              class="form-control" 
+              placeholder="Note title" 
+              required
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="noteCategory" class="form-label">Category</label>
+            <select id="noteCategory" class="form-control">
+              <!-- Categories will be loaded dynamically -->
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="noteContent" class="form-label">Content</label>
+            <textarea 
+              id="noteContent" 
+              class="form-control" 
+              placeholder="Note content" 
+              rows="8"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn" id="cancelButton">Cancel</button>
+        <button class="btn btn-primary" id="saveButton">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Note Viewer Modal -->
+  <div class="modal-overlay" id="noteViewerModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="viewerTitle"></h2>
+        <button class="modal-close" id="closeViewer">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="note-details">
+          <div class="note-metadata">
+            <span class="note-category" id="viewerCategory"></span>
+            <span class="note-date" id="viewerDate"></span>
+          </div>
+          
+          <div class="note-full-content" id="viewerContent"></div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn" id="closeViewerBtn">Close</button>
+        <button class="btn btn-primary" id="editFromViewerBtn">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="store.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
