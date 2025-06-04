@@ -1,16 +1,47 @@
 ---
-
+import MainLayout from '../layouts/MainLayout.astro';
+import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
+import SearchBar from '../components/SearchBar.astro';
+import NoteList from '../components/NoteList.astro';
+import NoteEditor from '../components/NoteEditor.astro';
+import NoteViewer from '../components/NoteViewer.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout title="NoteEase">
+  <Header title="NoteEase" />
+  
+  <Sidebar />
+  
+  <main class="container">
+    <SearchBar />
+    <NoteList />
+  </main>
+  
+  <!-- Floating Action Button for adding new notes -->
+  <button class="fab" id="addNoteButton" aria-label="Create new note">
+    <span class="material-icons">add</span>
+  </button>
+  
+  <!-- Modals -->
+  <NoteEditor />
+  <NoteViewer />
+</MainLayout>
+
+<style>
+  main {
+    padding: var(--spacing-md) 0;
+    min-height: calc(100vh - 64px);
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const addNoteButton = document.getElementById("addNoteButton");
+    
+    // Floating action button - create new note
+    addNoteButton.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("newNote"));
+    });
+  });
+</script>
