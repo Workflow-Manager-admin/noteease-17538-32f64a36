@@ -1,0 +1,7 @@
+
+> astro@0.0.1 dev
+> astro dev --host 0.0.0.0 --port 3000
+
+Node.js v18.19.1 is not supported by Astro!
+Please upgrade Node.js to a supported version: ">=18.20.8"
+

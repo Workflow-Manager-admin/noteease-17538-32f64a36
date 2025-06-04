@@ -1,0 +1,26 @@
+npm WARN EBADENGINE Unsupported engine {
+npm WARN EBADENGINE   package: 'astro@5.8.2',
+npm WARN EBADENGINE   required: {
+npm WARN EBADENGINE     node: '18.20.8 || ^20.3.0 || >=22.0.0',
+npm WARN EBADENGINE     npm: '>=9.6.5',
+npm WARN EBADENGINE     pnpm: '>=7.1.0'
+npm WARN EBADENGINE   },
+npm WARN EBADENGINE   current: { node: 'v18.19.1', npm: '9.2.0' }
+npm WARN EBADENGINE }
+npm WARN EBADENGINE Unsupported engine {
+npm WARN EBADENGINE   package: '@astrojs/telemetry@3.3.0',
+npm WARN EBADENGINE   required: { node: '18.20.8 || ^20.3.0 || >=22.0.0' },
+npm WARN EBADENGINE   current: { node: 'v18.19.1', npm: '9.2.0' }
+npm WARN EBADENGINE }
+npm WARN EBADENGINE Unsupported engine {
+npm WARN EBADENGINE   package: '@astrojs/prism@3.3.0',
+npm WARN EBADENGINE   required: { node: '18.20.8 || ^20.3.0 || >=22.0.0' },
+npm WARN EBADENGINE   current: { node: 'v18.19.1', npm: '9.2.0' }
+npm WARN EBADENGINE }
+
+added 406 packages, and audited 407 packages in 23s
+
+182 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
