@@ -1,0 +1,84 @@
+---
+const { title = "NoteEase", showBackButton = false } = Astro.props;
+---
+
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      {showBackButton && (
+        <button class="back-button" id="backButton">
+          <span class="material-icons">arrow_back</span>
+        </button>
+      )}
+      <h1>{title}</h1>
+      <button class="menu-button" id="menuButton">
+        <span class="material-icons">menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: var(--spacing-md) 0;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+  }
+
+  .back-button,
+  .menu-button {
+    background: transparent;
+    border: none;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .back-button:hover,
+  .menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+</style>
+
+<script>
+  // Event listeners for header buttons
+  document.addEventListener("DOMContentLoaded", () => {
+    const backButton = document.getElementById("backButton");
+    const menuButton = document.getElementById("menuButton");
+    
+    if (backButton) {
+      backButton.addEventListener("click", () => {
+        // Navigate back or trigger a custom event
+        window.history.back();
+      });
+    }
+    
+    if (menuButton) {
+      menuButton.addEventListener("click", () => {
+        // Dispatch a custom event that can be caught by parent components
+        document.dispatchEvent(new CustomEvent("toggleSidebar"));
+      });
+    }
+  });
+</script>
