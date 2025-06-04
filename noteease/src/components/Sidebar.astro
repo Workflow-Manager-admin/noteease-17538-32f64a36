@@ -1,0 +1,217 @@
+---
+import notesStore from "../store/notesStore";
+
+// Get categories from store
+const categories = notesStore.getCategories();
+---
+
+<div class="sidebar-container" id="sidebar">
+  <div class="sidebar">
+    <button class="sidebar-close" id="closeSidebar">
+      <span class="material-icons">close</span>
+    </button>
+    
+    <div class="sidebar-header">
+      <h2>Categories</h2>
+      <button class="btn btn-accent add-category-button" id="addCategoryButton">
+        <span class="material-icons">add</span> New
+      </button>
+    </div>
+    
+    <ul class="category-list">
+      <li class="category-item">
+        <button class="category-button active" data-category="">All Notes</button>
+      </li>
+      {categories.map((category) => (
+        <li class="category-item">
+          <button class="category-button" data-category={category}>
+            {category}
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+</div>
+
+<style>
+  .sidebar-container {
+    display: none;
+  }
+  
+  .sidebar-container.visible {
+    display: block;
+  }
+
+  .sidebar {
+    width: 280px;
+    background-color: var(--card-background);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+    padding: var(--spacing-lg) var(--spacing-md);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sidebar-container.visible .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .sidebar-header h2 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+  }
+
+  .add-category-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  .category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .category-item {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .category-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: transparent;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    transition: background-color 0.2s;
+  }
+
+  .category-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .category-button.active {
+    background-color: rgba(25, 118, 210, 0.1);
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+
+  .sidebar-close {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .sidebar-close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  
+  .sidebar-container.visible .sidebar-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>
+
+<script>
+  import notesStore from "../store/notesStore";
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    const sidebarElement = document.getElementById("sidebar");
+    const closeSidebarButton = document.getElementById("closeSidebar");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const categoryButtons = document.querySelectorAll(".category-button");
+    const addCategoryButton = document.getElementById("addCategoryButton");
+    
+    // Function to toggle sidebar visibility
+    function toggleSidebar() {
+      sidebarElement.classList.toggle("visible");
+    }
+    
+    // Close sidebar when clicking the close button or overlay
+    closeSidebarButton.addEventListener("click", toggleSidebar);
+    sidebarOverlay.addEventListener("click", toggleSidebar);
+    
+    // Listen for toggle sidebar event from header
+    document.addEventListener("toggleSidebar", toggleSidebar);
+    
+    // Handle category selection
+    categoryButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        // Remove active class from all buttons
+        categoryButtons.forEach(btn => btn.classList.remove("active"));
+        
+        // Add active class to clicked button
+        button.classList.add("active");
+        
+        // Set active category in store
+        const category = button.dataset.category || null;
+        notesStore.setActiveCategory(category);
+        
+        // Dispatch event to notify components about category change
+        document.dispatchEvent(new CustomEvent("categoryChanged", { 
+          detail: { category }
+        }));
+        
+        // Close sidebar on mobile
+        if (window.innerWidth < 768) {
+          toggleSidebar();
+        }
+      });
+    });
+    
+    // Handle adding new category
+    addCategoryButton.addEventListener("click", () => {
+      const newCategory = prompt("Enter new category name:");
+      
+      if (newCategory && newCategory.trim()) {
+        const added = notesStore.addCategory(newCategory.trim());
+        
+        if (added) {
+          // Refresh the sidebar (in a real app, you might use a more elegant approach)
+          window.location.reload();
+        } else {
+          alert("Category already exists!");
+        }
+      }
+    });
+  });
+</script>
