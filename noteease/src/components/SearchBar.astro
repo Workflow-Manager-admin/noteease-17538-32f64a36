@@ -1,0 +1,35 @@
+---
+// Search component for filtering notes
+---
+
+<div class="search-container">
+  <span class="material-icons search-icon">search</span>
+  <input 
+    type="text" 
+    class="search-input" 
+    id="searchInput" 
+    placeholder="Search notes..." 
+    aria-label="Search notes"
+  />
+</div>
+
+<script>
+  import notesStore from "../store/notesStore";
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("searchInput");
+    
+    // Handle search input
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value;
+      
+      // Set search query in store
+      notesStore.setSearchQuery(query);
+      
+      // Dispatch event to notify components about search query change
+      document.dispatchEvent(new CustomEvent("searchQueryChanged", { 
+        detail: { query }
+      }));
+    });
+  });
+</script>
